@@ -8,9 +8,11 @@ import json
 import socket
 import os
 
+
 def write_to_data_warehouse(results):
     if len(results) > 0:
         print("Wrote " + json.dumps(results) + " to data warehouse.\n")
+
 
 def main():
     HOST = os.environ.get("REDIS_HOST", "localhost")
@@ -18,11 +20,7 @@ def main():
     USERNAME = os.environ.get("REDIS_USER")
     PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    client_kwargs = {
-    "host": HOST,
-    "port": PORT,
-    "decode_responses": True
-    }
+    client_kwargs = {"host": HOST, "port": PORT, "decode_responses": True}
 
     if USERNAME:
         client_kwargs["username"] = USERNAME
@@ -48,9 +46,12 @@ def main():
         print("Group already exists.")
 
     while True:
-        results = redis.xreadgroup(group_name, consumer_name, stream_offsets, None, block_ms)
+        results = redis.xreadgroup(
+            group_name, consumer_name, stream_offsets, None, block_ms
+        )
         write_to_data_warehouse(results)
         time.sleep(1)
+
 
 if __name__ == "__main__":
     main()

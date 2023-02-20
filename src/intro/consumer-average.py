@@ -9,8 +9,10 @@ import json
 import socket
 import os
 
+
 def print_yellow(text):
     print("\033[93m" + text + "\033[0m")
+
 
 def get_rolling_average(results, window):
     total = 0
@@ -34,11 +36,7 @@ def main():
     USERNAME = os.environ.get("REDIS_USER")
     PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    client_kwargs = {
-    "host": HOST,
-    "port": PORT,
-    "decode_responses": True
-    }
+    client_kwargs = {"host": HOST, "port": PORT, "decode_responses": True}
 
     if USERNAME:
         client_kwargs["username"] = USERNAME
@@ -65,13 +63,16 @@ def main():
         print_yellow("Group already exists.")
 
     while True:
-        results = redis.xreadgroup(group_name, consumer_name,
-            stream_offsets, None, block_ms)
+        results = redis.xreadgroup(
+            group_name, consumer_name, stream_offsets, None, block_ms
+        )
 
         if len(results) > 0:
             print_yellow("Processing: " + json.dumps(results))
-            print_yellow("Rolling Average: " + str(get_rolling_average(results, window)))
-        
+            print_yellow(
+                "Rolling Average: " + str(get_rolling_average(results, window))
+            )
+
         time.sleep(1)
 
 

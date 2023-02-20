@@ -6,6 +6,7 @@ import time
 import json
 import os
 
+
 class Measurement:
     def __init__(self):
         self.postal_codes = [94016, 80014, 60659, 10011]
@@ -20,7 +21,8 @@ class Measurement:
         elif self.current_temp - 1 >= self.min_temp:
             self.current_temp -= 1
 
-        return {'postal_code': self.postal_codes[0], 'temp_f': self.current_temp}
+        return {"postal_code": self.postal_codes[0], "temp_f": self.current_temp}
+
 
 def main():
     HOST = os.environ.get("REDIS_HOST", "localhost")
@@ -28,11 +30,7 @@ def main():
     USERNAME = os.environ.get("REDIS_USER")
     PASSWORD = os.environ.get("REDIS_PASSWORD")
 
-    client_kwargs = {
-    "host": HOST,
-    "port": PORT,
-    "decode_responses": True
-    }
+    client_kwargs = {"host": HOST, "port": PORT, "decode_responses": True}
 
     if USERNAME:
         client_kwargs["username"] = USERNAME
@@ -50,6 +48,7 @@ def main():
         id = redis.xadd(stream_key, entry, "*")
         print("Wrote " + json.dumps(entry) + " with ID " + id)
         time.sleep(1)
+
 
 if __name__ == "__main__":
     main()
