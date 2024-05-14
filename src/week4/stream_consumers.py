@@ -114,7 +114,10 @@ def aggregating_consumer_func(
 ):
     log(
         AGGREGATING_CONSUMER_PREFIX,
-        f"Starting aggregating consumer in stream {current_stream_key} at message {last_message_id}.",
+        (
+            f"Starting aggregating consumer in stream {current_stream_key} "
+            f"at message {last_message_id}.",
+        ),
     )
 
     redis = get_connection()
@@ -154,7 +157,10 @@ def aggregating_consumer_func(
                 # block for a while then try reading it again.
                 log(
                     AGGREGATING_CONSUMER_PREFIX,
-                    f"Waiting for new messages in stream {current_stream_key}, or new stream partition.",
+                    (
+                        f"Waiting for new messages in stream {current_stream_key}, "
+                        f"or new stream partition.",
+                    ),
                 )
         else:
             # Read the response that we got from Redis
@@ -249,7 +255,10 @@ def averages_consumer_func():
 
     log(
         AVERAGES_CONSUMER_PREFIX,
-        f"Starting averages consumer in stream {const.AVERAGES_STREAM_KEY} at message {last_message_id}.",
+        (
+            f"Starting averages consumer in stream {const.AVERAGES_STREAM_KEY} "
+            f"at message {last_message_id}."
+        ),
     )
 
     while True:
@@ -279,7 +288,10 @@ def averages_consumer_func():
 
             log(
                 AVERAGES_CONSUMER_PREFIX,
-                f"Average temperature for {msg_date} at {msg_hour} was {msg_average_temperature}F ({msg_num_observations} observations).",
+                (
+                    f"Average temperature for {msg_date} at {msg_hour} was "
+                    f"{msg_average_temperature}F ({msg_num_observations} observations)."
+                ),
             )
 
             # Update our last message for the next XREAD.

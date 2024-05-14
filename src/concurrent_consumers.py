@@ -1,5 +1,4 @@
-"""
-An example of concurrent consumers of the Natural Numbers Stream
+"""An example of concurrent consumers of the Natural Numbers Stream.
 
 The producer and consumers are implemented as subprocesses to simplify
 the example's execution
@@ -12,26 +11,26 @@ KEY = "numbers"
 
 
 def setup():
-    """Initializes the Stream"""
+    """Initialize the Stream."""
     redis = get_connection()
     redis.delete(KEY)
 
 
 def producer_func():
-    """Natural Numbers Stream producer"""
+    """Natural Numbers Stream producer."""
     redis = get_connection()
     n = 0
     while n < 8:
         data = {"n": n}
         _id = redis.xadd(KEY, data)
-        print(f"PRODUCER: Produced the number {n}")
+        print(f"PRODUCER: Produced the number {n}; written to message {_id}")
         n += 1
 
     print("PRODUCER: No more numbers for you!")
 
 
 def consumer_func(divisor):
-    """Checks whether a number is divisible by the divisor without remainder"""
+    """Check whether a number is divisible by the divisor without remainder."""
     redis = get_connection()
     timeout = 100
     retries = 0
@@ -55,7 +54,7 @@ def consumer_func(divisor):
             for message in messages:
                 last_id = message[0]
                 n = int(message[1]["n"])
-                if n % divisor == 0:
+                if n % divisor == 0 and n != 0:
                     print(f"CONSUMER: The number {n} can be divided by {divisor}")
 
 

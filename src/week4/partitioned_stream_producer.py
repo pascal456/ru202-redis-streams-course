@@ -70,8 +70,9 @@ def reset_state():
     stream_timestamp = TIMESTAMP_START
 
     print("Deleting old streams:")
-    for day in range(DAYS_TO_GENERATE):
-        stream_key_name = f"{const.STREAM_KEY_BASE}:{datetime.utcfromtimestamp(stream_timestamp).strftime('%Y%m%d')}"
+    for _ in range(DAYS_TO_GENERATE):
+        date = datetime.utcfromtimestamp(stream_timestamp).strftime("%Y%m%d")
+        stream_key_name = f"{const.STREAM_KEY_BASE}:{date}"
         print(stream_key_name)
         keys_to_delete.append(stream_key_name)
         stream_timestamp += ONE_DAY_SECONDS
